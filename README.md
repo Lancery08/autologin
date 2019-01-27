@@ -31,6 +31,6 @@
 ### Требования
 
 - [Moonloader](https://blast.hk/threads/13305/)
-- [Cleo 4](https://cleo.li)
+- [CLEO 4](https://cleo.li)
 - [Sampfuncs](https://blast.hk/threads/17/)
 - Библиотеки: SAMP.events, ini.cfg, sha1, basexx (уже присутствует в папке lib)
