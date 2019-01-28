@@ -1,7 +1,7 @@
 script_name('Autologin')
 script_author('akionka')
 script_version('1.1')
-script_version_number(2)
+script_version_number(1)
 
 local sampev = require "lib.samp.events"
 local vkeys = require "vkeys"
@@ -89,14 +89,14 @@ function main()
   while not isSampAvailable() do wait(0) end
 	inicfg.save(ini, "autologin")
 	sampAddChatMessage(u8:decode("[Autologin]: Скрипт {00FF00}успешно{FFFFFF} загружен. Версия: {2980b9}"..thisScript().version.."{FFFFFF}."), -1)
+	update()
+	while updateinprogess ~= false do wait(0) end
 	for k, v in pairs(ini) do
 		if v["server_ip"] == select(1, sampGetCurrentServerAddress()) and v["user_name"] == sampGetPlayerNickname(select(2, sampGetPlayerIdByCharHandle(PLAYER_PED))) then
 			account_info = v
 			break
 		end
 	end
-	update()
-	while updateinprogess ~= false do wait(0) end
 end
 
 function update()
