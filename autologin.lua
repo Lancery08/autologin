@@ -67,7 +67,7 @@ end
 
 function sampev.onShowDialog(id, stytle, title, btn1, btn2, text)
 	if id == 2 and account_info ~= nil and not attemps[1] then
-    sampSendDialogResponse(id, 1, 0, u8:decode(account_info["user_password"]))
+    sampSendDialogResponse(id, 1, 0, account_info["user_password"])
 		attemps[1] = true
     return false
   end
