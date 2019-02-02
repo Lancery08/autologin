@@ -1,7 +1,7 @@
 script_name('Autologin')
 script_author('akionka')
-script_version('1.1')
-script_version_number(1)
+script_version('1.2')
+script_version_number(3)
 
 local sampev = require "lib.samp.events"
 local vkeys = require "vkeys"
@@ -71,17 +71,15 @@ function sampev.onShowDialog(id, stytle, title, btn1, btn2, text)
 		attemps[1] = true
     return false
   end
-		if id == 530 and account_info ~= nil and not attemps[2] then
-	    sampSendDialogResponse(id, 1, 0, genCode(account_info["gauth_secret"]))
-			attemps[2] = true
-	    return false
-	  end
+	if id == 530 and account_info ~= nil and not attemps[2] then
+    sampSendDialogResponse(id, 1, 0, genCode(account_info["gauth_secret"]))
+		attemps[2] = true
+    return false
+  end
 end
 
 function sampev.onSendClientJoin(version, mod, nickname, challengeResponse, joinAuthKey, clientVer, unknown)
-	attemps[1] = false
-	attemps[2] = false
-	attemps[3] = false
+	attemps = {false, false, false}
 end
 
 function main()
@@ -110,8 +108,9 @@ function update()
 					version = info.version
 					version_num = info.version_num
 					if version_num > thisScript().version_num then
-						sampAddChatMessage(u8:decode("[Autologin]: Найдено объявление. Текущая версия: {2980b9}"..thisScript().version.."{FFFFFF}, новая версия: {2980b9}"..version.."{FFFFFF}. Начинаю закачку."), -1)
-						lua_thread.create(goupdate)
+						sampAddChatMessage(u8:decode("[Autologin]: Найдено объявление. Текущая версия: {2980b9}"..thisScript().version.."{FFFFFF}, новая версия: {2980b9}"..version.."{FFFFFF}."), -1)
+						sampAddChatMessage(u8:decode("[Autologin]: Но скачивать придется самому :( {2980b9}https://utka.su/hcQRW{FFFFFF}."), -1)
+						updateinprogess = false
 					else
 						sampAddChatMessage(u8:decode("[Autologin]: У вас установлена самая свежая версия скрипта."), -1)
 						updateinprogess = false
@@ -129,6 +128,7 @@ function goupdate()
 			sampAddChatMessage(u8:decode('[Autologin]: ... если у вас есть автоперезагрузка скриптов, то новая версия уже готова и снизу вы увидите приветственное сообщение.'), -1)
 			sampAddChatMessage(u8:decode('[Autologin]: Скорее всего прямо сейчас у вас сломался курсор. Введите {2980b9}/checker{FFFFFF}.'), -1)
 			sampAddChatMessage(u8:decode('[Autologin]: Если что-то пошло не так, то сообщите мне об этом в VK или Telegram > {2980b0}vk.com/akionka teleg.run/akionka{FFFFFF}.'), -1)
+			updateinprogess = false
 		end
 	end)
 end
