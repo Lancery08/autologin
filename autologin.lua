@@ -1,7 +1,7 @@
 script_name('Autologin')
 script_author('akionka')
-script_version('1.2')
-script_version_number(3)
+script_version('1.3')
+script_version_number(4)
 
 local sampev = require "lib.samp.events"
 local vkeys = require "vkeys"
@@ -11,6 +11,7 @@ local band = bit.band
 local inicfg = require "inicfg"
 local dlstatus = require "moonloader".download_status
 local encoding = require "encoding"
+local isGoUpdate = false
 encoding.default = 'cp1251'
 u8 = encoding.UTF8
 
@@ -88,7 +89,7 @@ function main()
 	inicfg.save(ini, "autologin")
 	sampAddChatMessage(u8:decode("[Autologin]: Скрипт {00FF00}успешно{FFFFFF} загружен. Версия: {2980b9}"..thisScript().version.."{FFFFFF}."), -1)
 	update()
-	while updateinprogess ~= false do wait(0) end
+	while updateinprogess ~= false do wait(0) if isGoUpdate then isGoUpdate = false goupdate() end end
 	for k, v in pairs(ini) do
 		if v["server_ip"] == select(1, sampGetCurrentServerAddress()) and v["user_name"] == sampGetPlayerNickname(select(2, sampGetPlayerIdByCharHandle(PLAYER_PED))) then
 			account_info = v
@@ -108,9 +109,8 @@ function update()
 					version = info.version
 					version_num = info.version_num
 					if version_num > thisScript().version_num then
-						sampAddChatMessage(u8:decode("[Autologin]: Найдено объявление. Текущая версия: {2980b9}"..thisScript().version.."{FFFFFF}, новая версия: {2980b9}"..version.."{FFFFFF}."), -1)
-						sampAddChatMessage(u8:decode("[Autologin]: Но скачивать придется самому :( {2980b9}https://utka.su/hcQRW{FFFFFF}."), -1)
-						updateinprogess = false
+						sampAddChatMessage(u8:decode("[Autologin]: Найдено объявление. Текущая версия: {2980b9}"..thisScript().version.."{FFFFFF}, новая версия: {2980b9}"..version.."{FFFFFF}. Начинаю закачку."), -1)
+						isGoUpdate = true
 					else
 						sampAddChatMessage(u8:decode("[Autologin]: У вас установлена самая свежая версия скрипта."), -1)
 						updateinprogess = false
