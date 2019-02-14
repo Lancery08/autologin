@@ -1,7 +1,7 @@
 script_name('Autologin')
 script_author('akionka')
-script_version('1.3')
-script_version_number(4)
+script_version('1.4')
+script_version_number(5)
 
 local sampev = require "lib.samp.events"
 local vkeys = require "vkeys"
@@ -56,11 +56,11 @@ function sampev.onShowTextDraw(id, textdraw)
 			for i = 1, #textdraws do
 				local num = tostring(account_info["user_textdrawpass"]):sub(i,i)
 				for z, _ in ipairs(textdraws) do
-					if textdraws[z] == num then sampSendClickTextdraw(635 + z) end
+					if textdraws[z] == num then sampSendClickTextdraw(637 + z) end
 				end
 			end
 			textdraws = {}
-			sampSendClickTextdraw(651)
+			sampSendClickTextdraw(653)
 			attemps[3] = true
 		end
 	end
