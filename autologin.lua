@@ -1,7 +1,7 @@
 script_name('Autologin')
 script_author('akionka')
-script_version('1.4')
-script_version_number(5)
+script_version('1.5')
+script_version_number(6)
 
 local sampev = require "lib.samp.events"
 local vkeys = require "vkeys"
@@ -63,6 +63,12 @@ function sampev.onShowTextDraw(id, textdraw)
 			sampSendClickTextdraw(653)
 			attemps[3] = true
 		end
+	end
+end
+
+function sampev.onServerMessage(color, text)
+	if account_info ~= nil and color == -1347440641 and text == u8:decode("{ffffff}С возвращением, вы успешно вошли в свой аккаунт.") then
+		sampSpawnPlayer()
 	end
 end
 
