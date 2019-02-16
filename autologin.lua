@@ -1,7 +1,7 @@
 script_name('Autologin')
 script_author('akionka')
-script_version('1.5')
-script_version_number(6)
+script_version('1.6')
+script_version_number(7)
 
 local sampev = require "lib.samp.events"
 local vkeys = require "vkeys"
@@ -68,7 +68,10 @@ end
 
 function sampev.onServerMessage(color, text)
 	if account_info ~= nil and color == -1347440641 and text == u8:decode("{ffffff}С возвращением, вы успешно вошли в свой аккаунт.") then
-		sampSpawnPlayer()
+		lua_thread.create(function()
+			wait(500)
+			sampSpawnPlayer()
+		end)
 	end
 end
 
