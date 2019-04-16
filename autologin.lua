@@ -192,9 +192,7 @@ function imgui.OnDrawFrame()
       imgui.InputText('Доп. пароль##'..selected, accounts_buffs[selected]['user_textdrawpass'])
 			imgui.InputText('Токен GAuth##'..selected, accounts_buffs[selected]['gauth_secret'])
 			accounts_buffs[selected]['gcode'].v = genCode(accounts_buffs[selected]['gauth_secret'].v)
-			imgui.InputText('##code..'..selected, accounts_buffs[selected]['gcode'], 16384)
-			imgui.SameLine()
-			imgui.Text(tostring(30 - math.floor((os.time() / 30 - math.floor(os.time() / 30)) * 30 + 0.5)))
+			imgui.InputText(tostring(30 - math.floor((os.time() / 30 - math.floor(os.time() / 30)) * 30 + 0.5))..'##code..'..selected, accounts_buffs[selected]['gcode'], 16384)
       if imgui.CollapsingHeader('Сервер') then
         if imgui.ListBox('', accounts_buffs[selected]['server'], {'Trinity RPG', 'Trinity RP 1', 'Trinity RP 2'}, imgui.ImInt(3)) then
           if accounts_buffs[selected]['server'].v == 0 then accounts[selected]['server_ip'] = '185.169.134.83' end
