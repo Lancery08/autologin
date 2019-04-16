@@ -1,7 +1,7 @@
 script_name('Autologin')
 script_author('akionka')
-script_version('1.7')
-script_version_number(9)
+script_version('1.7.1')
+script_version_number(10)
 
 local sampev   = require 'lib.samp.events'
 local vkeys    = require 'vkeys'
@@ -140,7 +140,7 @@ function imgui.OnDrawFrame()
     imgui.SetNextWindowPos(imgui.ImVec2(resX / 2, resY / 2), imgui.Cond.Always, imgui.ImVec2(0.5, 0.5))
     imgui.Begin(thisScript().name..' v'..thisScript().version..' | Менеджер каналов', cat_window_state, imgui.WindowFlags.AlwaysAutoResize)
     imgui.BeginGroup()
-      imgui.BeginChild('Catalog', imgui.ImVec2(150, 215 - imgui.GetItemsLineHeightWithSpacing() - 1), true)
+      imgui.BeginChild('Catalog', imgui.ImVec2(150, 240 - imgui.GetItemsLineHeightWithSpacing() - 1), true)
         for i, v in ipairs(accounts) do
           if imgui.Selectable(v['user_name']..'##'..i, selected == i) then selected = i end
         end
@@ -156,13 +156,15 @@ function imgui.OnDrawFrame()
                 user_password     = imgui.ImBuffer(64),
                 user_textdrawpass = imgui.ImBuffer(5),
                 gauth_secret      = imgui.ImBuffer(17),
-                server            = imgui.ImInt(1)
+                server            = imgui.ImInt(1),
+								gcode             = imgui.ImBuffer(7)
               }
               temptable['user_name'].v         = 'Nick_Name'
               temptable['user_password'].v     = 'HackMe123'
               temptable['user_textdrawpass'].v = '1337'
               temptable['gauth_secret'].v      = 'MTIzNDU2Nzg5MTIz'
               temptable['server'].v            = 0
+							temptable['gcode'].v             = genCode('MTIzNDU2Nzg5MTIz')
               table.insert(accounts_buffs, temptable)
               table.insert(accounts, {
                 user_name         = 'Nick_Name',
@@ -183,12 +185,16 @@ function imgui.OnDrawFrame()
       imgui.EndChild()
     imgui.EndGroup()
     imgui.SameLine()
-    imgui.BeginChild('Settings', imgui.ImVec2(300, 215), true)
+    imgui.BeginChild('Settings', imgui.ImVec2(300, 240), true)
     if selected ~= 0 then
       imgui.InputText('Ник-нейм##'..selected, accounts_buffs[selected]['user_name'])
       imgui.InputText('Пароль##'..selected, accounts_buffs[selected]['user_password'])
       imgui.InputText('Доп. пароль##'..selected, accounts_buffs[selected]['user_textdrawpass'])
-      imgui.InputText('Токен GAuth##'..selected, accounts_buffs[selected]['gauth_secret'])
+			imgui.InputText('Токен GAuth##'..selected, accounts_buffs[selected]['gauth_secret'])
+			accounts_buffs[selected]['gcode'].v = genCode(accounts_buffs[selected]['gauth_secret'].v)
+			imgui.InputText('##code..'..selected, accounts_buffs[selected]['gcode'], 16384)
+			imgui.SameLine()
+			imgui.Text(tostring(30 - math.floor((os.time() / 30 - math.floor(os.time() / 30)) * 30 + 0.5)))
       if imgui.CollapsingHeader('Сервер') then
         if imgui.ListBox('', accounts_buffs[selected]['server'], {'Trinity RPG', 'Trinity RP 1', 'Trinity RP 2'}, imgui.ImInt(3)) then
           if accounts_buffs[selected]['server'].v == 0 then accounts[selected]['server_ip'] = '185.169.134.83' end
@@ -262,11 +268,13 @@ function main()
           user_textdrawpass = imgui.ImBuffer(5),
           gauth_secret      = imgui.ImBuffer(17),
           server            = imgui.ImInt(1),
+					gcode 						= imgui.ImBuffer(7)
         }
         temptable['user_name'].v         = v['user_name']
         temptable['user_password'].v     = v['user_password']
         temptable['user_textdrawpass'].v = v['user_textdrawpass']
         temptable['gauth_secret'].v      = v['gauth_secret']
+				temptable['gcode'].v 						 = genCode(v['gauth_secret'])
         if v['server_ip'] == '185.169.134.83' then temptable['server'].v = 0 end
         if v['server_ip'] == '185.169.134.84' then temptable['server'].v = 1 end
         if v['server_ip'] == '185.169.134.85' then temptable['server'].v = 2 end
@@ -292,7 +300,8 @@ function main()
         user_password     = imgui.ImBuffer(64),
         user_textdrawpass = imgui.ImBuffer(5),
         gauth_secret      = imgui.ImBuffer(17),
-        server            = imgui.ImInt(1)
+        server            = imgui.ImInt(1),
+				gcode 						= imgui.ImBuffer(7)
       }
       accounts_buffs = {}
       temptable['user_name'].v         = 'Nick_Name'
@@ -300,6 +309,7 @@ function main()
       temptable['user_textdrawpass'].v = '1337'
       temptable['gauth_secret'].v      = 'MTIzNDU2Nzg5MTIz'
       temptable['server'].v            = 0
+			temptable['gcode'].v    				 = genCode('MTIzNDU2Nzg5MTIz')
       table.insert(accounts_buffs, temptable)
     else
       sampAddChatMessage(u8:decode('[Autologin]: Что-то пошло не так :('), -1)
