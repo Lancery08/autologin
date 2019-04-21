@@ -1,7 +1,7 @@
 script_name('Autologin')
 script_author('akionka')
-script_version('1.7.1')
-script_version_number(10)
+script_version('1.7.2')
+script_version_number(11)
 
 local sampev   = require 'lib.samp.events'
 local vkeys    = require 'vkeys'
@@ -138,7 +138,7 @@ function imgui.OnDrawFrame()
   if cat_window_state.v then
     local resX, resY = getScreenResolution()
     imgui.SetNextWindowPos(imgui.ImVec2(resX / 2, resY / 2), imgui.Cond.Always, imgui.ImVec2(0.5, 0.5))
-    imgui.Begin(thisScript().name..' v'..thisScript().version..' | Менеджер каналов', cat_window_state, imgui.WindowFlags.AlwaysAutoResize)
+    imgui.Begin(thisScript().name..' v'..thisScript().version..' | Менеджер аккаунтов', cat_window_state, imgui.WindowFlags.AlwaysAutoResize)
     imgui.BeginGroup()
       imgui.BeginChild('Catalog', imgui.ImVec2(150, 240 - imgui.GetItemsLineHeightWithSpacing() - 1), true)
         for i, v in ipairs(accounts) do
