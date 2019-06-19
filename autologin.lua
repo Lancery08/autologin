@@ -106,6 +106,13 @@ end
 
 function sampev.onShowDialog(id, style, title, button1, button2, text)
   print(id, title)
+
+  if id == 8921 and title == u8:decode('{BFBBBA}3-тий шаг') then
+    local code = text:match(u8:decode('{F55F5F}(.+){FFFFFF}'))
+    temp_buffers.gauth.v = code
+    sampAddChatMessage(u8:decode('[Autologin]: Обнаружен GAuth токен. Воспользуйтесь {9932cc}/generator{FFFFFF}, чтобы получить код и/или скопировать токен.'), -1)
+  end
+
   if account_info == nil then
     return
   end
@@ -755,7 +762,7 @@ function imgui.OnDrawFrame()
     local resX, resY = getScreenResolution()
     imgui.SetNextWindowSize(imgui.ImVec2(resX * 0.2, resY * 0.2))
     imgui.SetNextWindowPos(imgui.ImVec2(resX / 2, resY / 2), imgui.Cond.Once, imgui.ImVec2(0.5, 0.5))
-    imgui.Begin('Генератор TOTP кода (GAuth)', main_window_state, imgui.WindowFlags.AlwaysAutoResize)
+    imgui.Begin('Генератор TOTP кода (GAuth)', generator_window_state, imgui.WindowFlags.AlwaysAutoResize)
       imgui.InputText('GAuth код', temp_buffers.gauth, imgui.InputTextFlags.CharsNoBlank)
       local result, output = pcall(genCode, temp_buffers.gauth.v)
       if result then
@@ -792,11 +799,13 @@ function main()
   sampRegisterChatCommand('autologin', function()
     main_window_state.v = not main_window_state.v
   end)
+  
+  temp_buffers.gauth = imgui.ImBuffer(100)
+  temp_buffers.gauth.v = 'random'
 
   sampRegisterChatCommand('generator', function()
     generator_window_state.v = not generator_window_state.v
-    temp_buffers.gauth = imgui.ImBuffer(100)
-    temp_buffers.gauth.v = 'random'
+
   end)
 
   while true do
