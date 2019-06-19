@@ -1,7 +1,7 @@
 script_name('Autologin')
 script_author('akionka')
-script_version('1.8')
-script_version_number(12)
+script_version('1.8.1')
+script_version_number(13)
 
 local sampev   = require 'lib.samp.events'
 local vkeys    = require 'vkeys'
@@ -131,7 +131,24 @@ function sampev.onShowDialog(id, style, title, button1, button2, text)
   end
 
   if account_info['suID'] >= 10 and account_info['suID'] <= 18 then
-    -- TODO: Arizona
+    if id == 2 and not attemps[1] then
+      sampSendDialogResponse(id, 1, 0, account_info['password'])
+      attemps[1] = true
+      return false
+    end
+
+    if id == 8929 and not attemps[2] and #account_info['gauth_secret'] ~= 0 then
+      if #account_info['gauth_secret'] == 0 then return end
+      local result, output = pcall(genCode, account_info['gauth_secret'])
+      if result then
+        sampSendDialogResponse(id, 1, 0, output)
+        return false     
+      else
+        print('GAuth код невалидный, либо не указан.')
+      end
+      attemps[3] = true
+      return false
+    end
   end
 
   if account_info['suID'] >= 19 and account_info['suID'] <= 26 then
