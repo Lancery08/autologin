@@ -338,7 +338,7 @@ function sampev.onServerMessage(color, text)
 end
 
 function sampev.onShowDialog(id, style, title, button1, button2, text)
-  print(id, title)
+  -- print(id, title)
 
 
   -- Интеграция с Аризоной
