@@ -1,7 +1,7 @@
 script_name('Autologin')
 script_author('akionka')
-script_version('1.8.1')
-script_version_number(13)
+script_version('1.8.2')
+script_version_number(14)
 
 local sampev   = require 'lib.samp.events'
 local vkeys    = require 'vkeys'
@@ -304,7 +304,7 @@ function sampev.onShowTextDraw(id, textdraw)
     -- TODO: Diamond
   
   elseif account_info['suID'] >= 27 and account_info['suID'] <= 29 then
-    -- TODO: Evolve
+    print(id, textdraw.text)
   
   elseif account_info['suID'] >= 30 and account_info['suID'] <= 33 then
     -- TODO: SAMP-RP
@@ -411,7 +411,11 @@ function sampev.onShowDialog(id, style, title, button1, button2, text)
 
   -- Евольва
   if account_info['suID'] >= 27 and account_info['suID'] <= 29 then
-    -- TODO: Evolve
+    if id == 1 and not attemps[1] then
+      sampSendDialogResponse(id, 1, 0, account_info['password'])
+      attemps[1] = true
+      return false
+    end
   end
   
   -- Самп рп
