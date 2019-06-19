@@ -22,7 +22,240 @@ local account_info = nil
 local attemps      = {false, false, false}
 
 -- Хех)
-local servers = {{is_builtin=true,title='Advance RP',list={{name='Red',ip='5.254.104.131',port=7777,uID=1},{name='Green',ip='5.254.104.132',port=7777,uID=2},{name='Yellow',ip='5.254.104.133',port=7777,uID=3},{name='Orange',ip='5.254.104.134',port=7777,uID=4},{name='Blue',ip='5.254.104.135',port=7777,uID=5},{name='White',ip='5.254.104.136',port=7777,uID=6},{name='Silver',ip='5.254.104.137',port=7777,uID=7},{name='Purple',ip='5.254.104.138',port=7777,uID=8},{name='Chocolate',ip='5.254.104.139',port=7777,uID=9}}},{is_builtin=true,title='Arizona RP',list={{name='Phoenix',ip='185.169.134.3',port=7777,uID=10},{name='Tucson',ip='185.169.134.4',port=7777,uID=11},{name='Scottdale',ip='185.169.134.43',port=7777,uID=12},{name='Chandler',ip='185.169.134.44',port=7777,uID=13},{name='Brainburg',ip='185.169.134.45',port=7777,uID=14},{name='Saint Rose',ip='185.169.134.5',port=7777,uID=15},{name='Mesa',ip='185.169.134.59',port=7777,uID=16},{name='Red-Rock',ip='185.169.134.61',port=7777,uID=17},{name='Yuma',ip='185.169.134.107',port=7777,uID=18}}},{is_builtin=true,title='Evovle RP',list={{name='First',ip='185.169.134.67',port=7777,uID=19},{name='Second',ip='185.169.134.68',port=7777,uID=20},{name='Third',ip='185.169.134.91',port=7777,uID=21}}},{is_builtin=true,title='Diamond RP',list={{name='Emerald',ip='194.61.44.61',port=7777,uID=22},{name='Radiant',ip='5.254.123.3',port=7777,uID=23},{name='Trilliant',ip='5.254.123.4',port=7777,uID=24},{name='Crystal',ip='5.254.123.4',port=7777,uID=25},{name='Sapphire',ip='5.254.123.6',port=7777,uID=26},{name='Onyx',ip='5.254.105.202',port=7777,uID=27},{name='Amber',ip='194.61.44.67',port=7777,uID=28},{name='Quartz',ip='5.254.105.204',port=7777,uID=29}}},{is_builtin=true,title='SAMP RP',list={{name='Second',ip='185.169.134.20',port=7777,uID=30},{name='Revolution',ip='185.169.134.11',port=7777,uID=31},{name='Reborn',ip='185.169.134.34',port=7777,uID=32},{name='Legacy',ip='185.169.134.22',port=7777,uID=33}}},{is_builtin=true,title='Trinity GTA',list={{name='RPG',ip='185.169.134.83',port=7777,uID=34},{name='RP1',ip='185.169.134.84',port=7777,uID=35},{name='RP2',ip='185.169.134.85',port=7777,uID=36}}}}
+local servers = {
+  {
+    is_builtin = true, title = 'Advance RP', list = {
+      {
+        name = 'Red', ip = '5.254.104.131', port = 7777, uID = 1
+      },
+      {
+        name = 'Green',
+        ip = '5.254.104.132',
+        port = 7777,
+        uID = 2
+      },
+      {
+        name = 'Yellow',
+        ip = '5.254.104.133',
+        port = 7777,
+        uID = 3
+      },
+      {
+        name = 'Orange',
+        ip = '5.254.104.134',
+        port = 7777,
+        uID = 4
+      },
+      {
+        name = 'Blue',
+        ip = '5.254.104.135',
+        port = 7777,
+        uID = 5
+      },
+      {
+        name = 'White',
+        ip = '5.254.104.136',
+        port = 7777,
+        uID = 6
+      },
+      {
+        name = 'Silver',
+        ip = '5.254.104.137',
+        port = 7777,
+        uID = 7
+      },
+      {
+        name = 'Purple',
+        ip = '5.254.104.138',
+        port = 7777,
+        uID = 8
+      },
+      {
+        name = 'Chocolate',
+        ip = '5.254.104.139',
+        port = 7777,
+        uID = 9
+      }
+    }
+  },
+  {
+    is_builtin = true,
+    title = 'Arizona RP',
+    list = {
+      {
+        name = 'Phoenix', ip = '185.169.134.3', port = 7777, uID = 10
+      },
+      {
+        name = 'Tucson',
+        ip = '185.169.134.4',
+        port = 7777,
+        uID = 11
+      },
+      {
+        name = 'Scottdale',
+        ip = '185.169.134.43',
+        port = 7777,
+        uID = 12
+      },
+      {
+        name = 'Chandler',
+        ip = '185.169.134.44',
+        port = 7777,
+        uID = 13
+      },
+      {
+        name = 'Brainburg',
+        ip = '185.169.134.45',
+        port = 7777,
+        uID = 14
+      },
+      {
+        name = 'Saint Rose',
+        ip = '185.169.134.5',
+        port = 7777,
+        uID = 15
+      },
+      {
+        name = 'Mesa',
+        ip = '185.169.134.59',
+        port = 7777,
+        uID = 16
+      },
+      {
+        name = 'Red-Rock',
+        ip = '185.169.134.61',
+        port = 7777,
+        uID = 17
+      },
+      {
+        name = 'Yuma',
+        ip = '185.169.134.107',
+        port = 7777,
+        uID = 18
+      }
+    }
+  },
+  {
+    is_builtin = true,
+    title = 'Evovle RP',
+    list = {
+      {
+        name = 'First', ip = '185.169.134.67', port = 7777, uID = 19
+      },
+      {
+        name = 'Second',
+        ip = '185.169.134.68',
+        port = 7777,
+        uID = 20
+      },
+      {
+        name = 'Third',
+        ip = '185.169.134.91',
+        port = 7777,
+        uID = 21
+      }
+    }
+  },
+  -- {
+  --   is_builtin = true,
+  --   title = 'Diamond RP',
+  --   list = {
+  --     {
+  --       name = 'Emerald', ip = '194.61.44.61', port = 7777, uID = 22
+  --     },
+  --     {
+  --       name = 'Radiant',
+  --       ip = '5.254.123.3',
+  --       port = 7777,
+  --       uID = 23
+  --     },
+  --     {
+  --       name = 'Trilliant',
+  --       ip = '5.254.123.4',
+  --       port = 7777,
+  --       uID = 24
+  --     },
+  --     {
+  --       name = 'Crystal',
+  --       ip = '5.254.123.4',
+  --       port = 7777,
+  --       uID = 25
+  --     },
+  --     {
+  --       name = 'Sapphire',
+  --       ip = '5.254.123.6',
+  --       port = 7777,
+  --       uID = 26
+  --     },
+  --     {
+  --       name = 'Onyx',
+  --       ip = '5.254.105.202',
+  --       port = 7777,
+  --       uID = 27
+  --     },
+  --     {
+  --       name = 'Amber',
+  --       ip = '194.61.44.67',
+  --       port = 7777,
+  --       uID = 28
+  --     },
+  --     {
+  --       name = 'Quartz',
+  --       ip = '5.254.105.204',
+  --       port = 7777,
+  --       uID = 29
+  --     }
+  --   }
+  -- },
+  -- {
+  --   is_builtin = true,
+  --   title = 'SAMP RP',
+  --   list = {
+  --     {
+  --       name = 'Second', ip = '185.169.134.20', port = 7777, uID = 30
+  --     },
+  --     {
+  --       name = 'Revolution',
+  --       ip = '185.169.134.11',
+  --       port = 7777,
+  --       uID = 31
+  --     },
+  --     {
+  --       name = 'Reborn',
+  --       ip = '185.169.134.34',
+  --       port = 7777,
+  --       uID = 32
+  --     },
+  --     {
+  --       name = 'Legacy',
+  --       ip = '185.169.134.22',
+  --       port = 7777,
+  --       uID = 33
+  --     }
+  --   }
+  -- },
+  {
+    is_builtin = true,
+    title = 'Trinity GTA',
+    list = {
+      {
+        name = 'RPG', ip = '185.169.134.83', port = 7777, uID = 34
+      },
+      {
+        name = 'RP1',
+        ip = '185.169.134.84',
+        port = 7777,
+        uID = 35
+      },
+      {
+        name = 'RP2',
+        ip = '185.169.134.85',
+        port = 7777,
+        uID = 36
+      }
+    }
+  }
+}
 
 local last_uID = 36
 local accounts = {
@@ -65,7 +298,7 @@ function sampev.onShowTextDraw(id, textdraw)
     -- Advance, не требуется
 
   elseif account_info['suID'] >= 10 and account_info['suID'] <= 18 then
-    -- TODO: Arizona
+    -- Arizona, не требуется
   
   elseif account_info['suID'] >= 19 and account_info['suID'] <= 26 then
     -- TODO: Diamond
@@ -107,6 +340,8 @@ end
 function sampev.onShowDialog(id, style, title, button1, button2, text)
   print(id, title)
 
+
+  -- Интеграция с Аризоной
   if id == 8921 and title == u8:decode('{BFBBBA}3-тий шаг') then
     local code = text:match(u8:decode('{F55F5F}(.+){FFFFFF}'))
     temp_buffers.gauth.v = code
@@ -117,6 +352,7 @@ function sampev.onShowDialog(id, style, title, button1, button2, text)
     return
   end
 
+  -- Адванс
   if account_info['suID'] >= 1 and account_info['suID'] <= 9 then
     if id == 1 and not attemps[1] then
       sampSendDialogResponse(id, 1, 0, account_info['password'])
@@ -137,6 +373,7 @@ function sampev.onShowDialog(id, style, title, button1, button2, text)
     end
   end
 
+  -- Аризона
   if account_info['suID'] >= 10 and account_info['suID'] <= 18 then
     if id == 2 and not attemps[1] then
       sampSendDialogResponse(id, 1, 0, account_info['password'])
@@ -158,14 +395,26 @@ function sampev.onShowDialog(id, style, title, button1, button2, text)
     end
   end
 
+  -- Даймонд, который с багом.
   if account_info['suID'] >= 19 and account_info['suID'] <= 26 then
-    -- TODO: Diamond
+    -- if id == 2 and not attemps[1] then
+    --   lua_thread.create(function()   
+    --     wait(5000) -- Та я отвечаю сервер говнище
+    --     print('шлю')
+    --     sampSendDialogResponse(id, 1, 0, account_info['password'])
+    --     attemps[1] = true
+    --     return false
+
+    --   end)
+    -- end
   end
 
+  -- Евольва
   if account_info['suID'] >= 27 and account_info['suID'] <= 29 then
     -- TODO: Evolve
   end
-
+  
+  -- Самп рп
   if account_info['suID'] >= 30 and account_info['suID'] <= 33 then
     -- TODO: SAMP-RP
   end
@@ -792,7 +1041,7 @@ function main()
 
   checkupdates('https://raw.githubusercontent.com/Akionka/autologin/master/version.json')
   apply_custom_style()
-  sampAddChatMessage(u8:decode('[Autologin]: Скрипт {00FF00}успешно{FFFFFF} загружен. Версия: {2980b9}'..thisScript().version..'{FFFFFF}.'), -1)
+  sampAddChatMessage(u8:decode('[Autologin]: Скрипт {00FF00}успешно{FFFFFF} загружен. Версия: {9932cc}'..thisScript().version..'{FFFFFF}.'), -1)
 
   loadAllData()
   
@@ -947,7 +1196,7 @@ function checkupdates(json)
           os.remove(fpath)
           if updateversion > thisScript().version_num then
             updatesavaliable = true
-            sampAddChatMessage(u8:decode('[Autologin]: Найдено объявление. Текущая версия: {2980b9}'..thisScript().version..'{FFFFFF}, новая версия: {2980b9}'..info.version..'{FFFFFF}.'), -1)
+            sampAddChatMessage(u8:decode('[Autologin]: Найдено объявление. Текущая версия: {9932cc}'..thisScript().version..'{FFFFFF}, новая версия: {9932cc}'..info.version..'{FFFFFF}.'), -1)
             return true
           else
             updatesavaliable = false
@@ -967,7 +1216,7 @@ function update(url)
     if status1 == dlstatus.STATUS_ENDDOWNLOADDATA then
       sampAddChatMessage(u8:decode('[Autologin]: Новая версия установлена! Чтобы скрипт обновился нужно либо перезайти в игру, либо ...'), -1)
       sampAddChatMessage(u8:decode('[Autologin]: ... если у вас есть автоперезагрузка скриптов, то новая версия уже готова и снизу вы увидите приветственное сообщение.'), -1)
-      sampAddChatMessage(u8:decode('[Autologin]: Если что-то пошло не так, то сообщите мне об этом в VK или Telegram > {2980b0}vk.com/akionka teleg.run/akionka{FFFFFF}.'), -1)
+      sampAddChatMessage(u8:decode('[Autologin]: Если что-то пошло не так, то сообщите мне об этом в VK или Telegram > {9932cc}vk.com/akionka teleg.run/akionka{FFFFFF}.'), -1)
       thisScript():reload()
     end
   end)
