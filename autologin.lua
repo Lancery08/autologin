@@ -376,7 +376,7 @@ function sampev.onShowDialog(id, style, title, button1, button2, text)
   -- Аризона
   if account_info['suID'] >= 10 and account_info['suID'] <= 18 then
     if id == 2 and not attemps[1] then
-      sampSendDialogResponse(id, 1, 0, u8:decode(account_info['password'])
+      sampSendDialogResponse(id, 1, 0, u8:decode(account_info['password']))
       attemps[1] = true
       return false
     end
