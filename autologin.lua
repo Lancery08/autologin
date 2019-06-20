@@ -304,7 +304,7 @@ function sampev.onShowTextDraw(id, textdraw)
     -- TODO: Diamond
   
   elseif account_info['suID'] >= 27 and account_info['suID'] <= 29 then
-    print(id, textdraw.text)
+    -- Evolve
   
   elseif account_info['suID'] >= 30 and account_info['suID'] <= 33 then
     -- TODO: SAMP-RP
@@ -316,7 +316,7 @@ function sampev.onShowTextDraw(id, textdraw)
     end
     if #textdraws == 10 then
       for i = 1, #textdraws do
-        local num = tostring(account_info['additionalpassword']):sub(i,i)
+        local num = ('%04d'):format(account_info['additionalpassword']):sub(i,i)
         for z, _ in ipairs(textdraws) do
           if textdraws[z] == num then sampSendClickTextdraw(640 + z) end
         end
@@ -355,7 +355,7 @@ function sampev.onShowDialog(id, style, title, button1, button2, text)
   -- Адванс
   if account_info['suID'] >= 1 and account_info['suID'] <= 9 then
     if id == 1 and not attemps[1] then
-      sampSendDialogResponse(id, 1, 0, account_info['password'])
+      sampSendDialogResponse(id, 1, 0, u8:decode(account_info['password']))
       attemps[1] = true
       return false
     end
@@ -367,7 +367,7 @@ function sampev.onShowDialog(id, style, title, button1, button2, text)
         sampSendDialogResponse(id, 1, 0, output)
         return false     
       else
-        print('GAuth код невалидный, либо не указан.')
+        print(u8:decode('GAuth код невалидный, либо не указан.'))
       end
       attemps[3] = true
     end
@@ -376,7 +376,7 @@ function sampev.onShowDialog(id, style, title, button1, button2, text)
   -- Аризона
   if account_info['suID'] >= 10 and account_info['suID'] <= 18 then
     if id == 2 and not attemps[1] then
-      sampSendDialogResponse(id, 1, 0, account_info['password'])
+      sampSendDialogResponse(id, 1, 0, u8:decode(account_info['password'])
       attemps[1] = true
       return false
     end
@@ -388,7 +388,7 @@ function sampev.onShowDialog(id, style, title, button1, button2, text)
         sampSendDialogResponse(id, 1, 0, output)
         return false     
       else
-        print('GAuth код невалидный, либо не указан.')
+        print(u8:decode('GAuth код невалидный, либо не указан.'))
       end
       attemps[3] = true
       return false
@@ -400,7 +400,6 @@ function sampev.onShowDialog(id, style, title, button1, button2, text)
     -- if id == 2 and not attemps[1] then
     --   lua_thread.create(function()   
     --     wait(5000) -- Та я отвечаю сервер говнище
-    --     print('шлю')
     --     sampSendDialogResponse(id, 1, 0, account_info['password'])
     --     attemps[1] = true
     --     return false
@@ -412,7 +411,7 @@ function sampev.onShowDialog(id, style, title, button1, button2, text)
   -- Евольва
   if account_info['suID'] >= 27 and account_info['suID'] <= 29 then
     if id == 1 and not attemps[1] then
-      sampSendDialogResponse(id, 1, 0, account_info['password'])
+      sampSendDialogResponse(id, 1, 0, u8:decode(account_info['password']))
       attemps[1] = true
       return false
     end
@@ -426,7 +425,7 @@ function sampev.onShowDialog(id, style, title, button1, button2, text)
   -- Trinity
   if account_info['suID'] >= 34 and account_info['suID'] <= 36 then
     if id == 2 and not attemps[1] then
-      sampSendDialogResponse(id, 1, 0, account_info['password'])
+      sampSendDialogResponse(id, 1, 0, u8:decode(account_info['password']))
       attemps[1] = true
       return false
     end
@@ -438,7 +437,7 @@ function sampev.onShowDialog(id, style, title, button1, button2, text)
         sampSendDialogResponse(id, 1, 0, output)
         return false     
       else
-        print('GAuth код невалидный, либо не указан.')
+        print(u8:decode('GAuth код невалидный, либо не указан.'))
       end
       attemps[3] = true
       return false
@@ -462,7 +461,7 @@ local server                 = imgui.ImInt(1)
 function imgui.OnDrawFrame()
   if main_window_state.v then
     local resX, resY = getScreenResolution()
-    imgui.SetNextWindowSize(imgui.ImVec2(resX * 0.3, resY * 0.3))
+    imgui.SetNextWindowSize(imgui.ImVec2(resX * 0.4, resY * 0.3))
     imgui.SetNextWindowPos(imgui.ImVec2(resX / 2, resY / 2), imgui.Cond.Once, imgui.ImVec2(0.5, 0.5))
     imgui.Begin(thisScript().name..' v'..thisScript().version, main_window_state, imgui.WindowFlags.AlwaysAutoResize)
 
@@ -1160,6 +1159,9 @@ function loadAllData()
         dontAskAboutDeletingServer  = false,
         dontAskAboutDeletingProject = false}))
       f:close()
+      temp_buffers.dontAskAboutDeletingAccount = imgui.ImBool(false)
+      temp_buffers.dontAskAboutDeletingServer  = imgui.ImBool(false)
+      temp_buffers.dontAskAboutDeletingProject = imgui.ImBool(false)
     end
     return
   end
