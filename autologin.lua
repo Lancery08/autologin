@@ -1,7 +1,7 @@
 script_name('Autologin')
 script_author('akionka')
-script_version('1.8.2')
-script_version_number(14)
+script_version('1.8.2.1')
+script_version_number(15)
 
 local sampev   = require 'lib.samp.events'
 local vkeys    = require 'vkeys'
