@@ -330,7 +330,6 @@ function sampev.onShowTextDraw(id, textdraw)
 
   elseif account_info['suID'] >= 27 and account_info['suID'] <= 29 then
     -- Evolve
-
   elseif account_info['suID'] >= 30 and account_info['suID'] <= 33 then
     -- TODO: SAMP-RP
 
