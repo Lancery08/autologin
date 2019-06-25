@@ -1,7 +1,7 @@
 script_name('Autologin')
 script_author('akionka')
-script_version('1.8.2')
-script_version_number(14)
+script_version('1.8.3')
+script_version_number(16)
 
 local sampev   = require 'lib.samp.events'
 local vkeys    = require 'vkeys'
@@ -13,7 +13,8 @@ local inicfg   = require 'inicfg'
 local dlstatus = require 'moonloader'.download_status
 local encoding = require 'encoding'
 
-local updatesavaliable = false
+local updatesavaliable   = false
+local collebrating_state = 0
 
 encoding.default = 'cp1251'
 u8 = encoding.UTF8
@@ -270,6 +271,12 @@ local accounts = {
 
 local temp_buffers = {}
 
+local trinity_data = {
+  submit = 659,
+  -- baseLetter = 1,
+  baseClickable = 643
+}
+
 function genCode(skey)
   skey = basexx.from_base32(skey)
   value = math.floor(os.time() / 30)
@@ -289,7 +296,25 @@ function genCode(skey)
   return ('%06d'):format(hash)
 end
 
+function sampev.onSendClickTextDraw( id )
+  if id == 0xFFFF then return end
+  print(id)
+  if collebrating_state == 1 then
+    sampAddChatMessage(u8:decode('[Autologin]: Пожалуйста, нажмите на кнопку Submit (неправильный выбор приведет к ошибкам при входе).'), -1)
+    trinity_data.baseClickable = id - 1
+    collebrating_state = 2
+    saveAllData()
+    return
+  elseif collebrating_state == 2 then
+    trinity_data.submit = id
+    collebrating_state = 0
+    saveAllData()
+    return
+  end
+end
+
 function sampev.onShowTextDraw(id, textdraw)
+  print(id, textdraw.text)
   if account_info == nil then
     return
   end
@@ -299,30 +324,30 @@ function sampev.onShowTextDraw(id, textdraw)
 
   elseif account_info['suID'] >= 10 and account_info['suID'] <= 18 then
     -- Arizona, не требуется
-  
+
   elseif account_info['suID'] >= 19 and account_info['suID'] <= 26 then
     -- TODO: Diamond
-  
+
   elseif account_info['suID'] >= 27 and account_info['suID'] <= 29 then
-    print(id, textdraw.text)
-  
+    -- Evolve
+
   elseif account_info['suID'] >= 30 and account_info['suID'] <= 33 then
     -- TODO: SAMP-RP
-  
+
   -- Trinity
   elseif account_info['suID'] >= 34 and account_info['suID'] <= 36 then
-    if id >= 2049 and id <= 2058 then 
-      table.insert(textdraws, textdraw.text) 
+    if id >= 2049 and id <= 2058 then
+      table.insert(textdraws, textdraw.text)
     end
     if #textdraws == 10 then
       for i = 1, #textdraws do
-        local num = tostring(account_info['additionalpassword']):sub(i,i)
+        local num = ('%04d'):format(account_info['additionalpassword']):sub(i,i)
         for z, _ in ipairs(textdraws) do
-          if textdraws[z] == num then sampSendClickTextdraw(640 + z) end
+          if textdraws[z] == num then sampSendClickTextdraw(trinity_data.baseClickable + z) end
         end
       end
       textdraws = {}
-      sampSendClickTextdraw(656)
+      sampSendClickTextdraw(trinity_data.submit)
       attemps[3] = true
     end
   end
@@ -355,7 +380,7 @@ function sampev.onShowDialog(id, style, title, button1, button2, text)
   -- Адванс
   if account_info['suID'] >= 1 and account_info['suID'] <= 9 then
     if id == 1 and not attemps[1] then
-      sampSendDialogResponse(id, 1, 0, account_info['password'])
+      sampSendDialogResponse(id, 1, 0, u8:decode(account_info['password']))
       attemps[1] = true
       return false
     end
@@ -365,9 +390,9 @@ function sampev.onShowDialog(id, style, title, button1, button2, text)
       local result, output = pcall(genCode, account_info['gauth_secret'])
       if result then
         sampSendDialogResponse(id, 1, 0, output)
-        return false     
+        return false
       else
-        print('GAuth код невалидный, либо не указан.')
+        print(u8:decode('GAuth код невалидный, либо не указан.'))
       end
       attemps[3] = true
     end
@@ -376,7 +401,7 @@ function sampev.onShowDialog(id, style, title, button1, button2, text)
   -- Аризона
   if account_info['suID'] >= 10 and account_info['suID'] <= 18 then
     if id == 2 and not attemps[1] then
-      sampSendDialogResponse(id, 1, 0, account_info['password'])
+      sampSendDialogResponse(id, 1, 0, u8:decode(account_info['password']))
       attemps[1] = true
       return false
     end
@@ -386,9 +411,9 @@ function sampev.onShowDialog(id, style, title, button1, button2, text)
       local result, output = pcall(genCode, account_info['gauth_secret'])
       if result then
         sampSendDialogResponse(id, 1, 0, output)
-        return false     
+        return false
       else
-        print('GAuth код невалидный, либо не указан.')
+        print(u8:decode('GAuth код невалидный, либо не указан.'))
       end
       attemps[3] = true
       return false
@@ -398,9 +423,8 @@ function sampev.onShowDialog(id, style, title, button1, button2, text)
   -- Даймонд, который с багом.
   if account_info['suID'] >= 19 and account_info['suID'] <= 26 then
     -- if id == 2 and not attemps[1] then
-    --   lua_thread.create(function()   
+    --   lua_thread.create(function()
     --     wait(5000) -- Та я отвечаю сервер говнище
-    --     print('шлю')
     --     sampSendDialogResponse(id, 1, 0, account_info['password'])
     --     attemps[1] = true
     --     return false
@@ -412,12 +436,12 @@ function sampev.onShowDialog(id, style, title, button1, button2, text)
   -- Евольва
   if account_info['suID'] >= 27 and account_info['suID'] <= 29 then
     if id == 1 and not attemps[1] then
-      sampSendDialogResponse(id, 1, 0, account_info['password'])
+      sampSendDialogResponse(id, 1, 0, u8:decode(account_info['password']))
       attemps[1] = true
       return false
     end
   end
-  
+
   -- Самп рп
   if account_info['suID'] >= 30 and account_info['suID'] <= 33 then
     -- TODO: SAMP-RP
@@ -426,19 +450,19 @@ function sampev.onShowDialog(id, style, title, button1, button2, text)
   -- Trinity
   if account_info['suID'] >= 34 and account_info['suID'] <= 36 then
     if id == 2 and not attemps[1] then
-      sampSendDialogResponse(id, 1, 0, account_info['password'])
+      sampSendDialogResponse(id, 1, 0, u8:decode(account_info['password']))
       attemps[1] = true
       return false
     end
-    
+
     if id == 530 and not attemps[2] and #account_info['gauth_secret'] ~= 0 then
       if #account_info['gauth_secret'] == 0 then return end
       local result, output = pcall(genCode, account_info['gauth_secret'])
       if result then
         sampSendDialogResponse(id, 1, 0, output)
-        return false     
+        return false
       else
-        print('GAuth код невалидный, либо не указан.')
+        print(u8:decode('GAuth код невалидный, либо не указан.'))
       end
       attemps[3] = true
       return false
@@ -462,7 +486,7 @@ local server                 = imgui.ImInt(1)
 function imgui.OnDrawFrame()
   if main_window_state.v then
     local resX, resY = getScreenResolution()
-    imgui.SetNextWindowSize(imgui.ImVec2(resX * 0.3, resY * 0.3))
+    imgui.SetNextWindowSize(imgui.ImVec2(resX * 0.4, resY * 0.3))
     imgui.SetNextWindowPos(imgui.ImVec2(resX / 2, resY / 2), imgui.Cond.Once, imgui.ImVec2(0.5, 0.5))
     imgui.Begin(thisScript().name..' v'..thisScript().version, main_window_state, imgui.WindowFlags.AlwaysAutoResize)
 
@@ -1027,10 +1051,10 @@ function imgui.OnDrawFrame()
       else
         imgui.Text('GAuth код невалидный')
       end
-    imgui.End() 
+    imgui.End()
 
- 
-  end 
+
+  end
 end
 
 function apply_custom_style()imgui.SwitchContext()local a=imgui.GetStyle()local b=a.Colors;local c=imgui.Col;local d=imgui.ImVec4;a.WindowRounding=0.0;a.WindowTitleAlign=imgui.ImVec2(0.5,0.5)a.ChildWindowRounding=0.0;a.FrameRounding=0.0;a.ItemSpacing=imgui.ImVec2(5.0,5.0)a.ScrollbarSize=13.0;a.ScrollbarRounding=0;a.GrabMinSize=8.0;a.GrabRounding=0.0;b[c.TitleBg]=d(0.60,0.20,0.80,1.00)b[c.TitleBgActive]=d(0.60,0.20,0.80,1.00)b[c.TitleBgCollapsed]=d(0.60,0.20,0.80,1.00)b[c.CheckMark]=d(0.60,0.20,0.80,1.00)b[c.Button]=d(0.60,0.20,0.80,0.31)b[c.ButtonHovered]=d(0.60,0.20,0.80,0.80)b[c.ButtonActive]=d(0.60,0.20,0.80,1.00)b[c.WindowBg]=d(0.13,0.13,0.13,1.00)b[c.Header]=d(0.60,0.20,0.80,0.31)b[c.HeaderHovered]=d(0.60,0.20,0.80,0.80)b[c.HeaderActive]=d(0.60,0.20,0.80,1.00)b[c.FrameBg]=d(0.60,0.20,0.80,0.31)b[c.FrameBgHovered]=d(0.60,0.20,0.80,0.80)b[c.FrameBgActive]=d(0.60,0.20,0.80,1.00)b[c.ScrollbarBg]=d(0.60,0.20,0.80,0.31)b[c.ScrollbarGrab]=d(0.60,0.20,0.80,0.31)b[c.ScrollbarGrabHovered]=d(0.60,0.20,0.80,0.80)b[c.ScrollbarGrabActive]=d(0.60,0.20,0.80,1.00)b[c.Text]=d(1.00,1.00,1.00,1.00)b[c.Border]=d(0.60,0.20,0.80,0.00)b[c.BorderShadow]=d(0.00,0.00,0.00,0.00)b[c.CloseButton]=d(0.60,0.20,0.80,0.31)b[c.CloseButtonHovered]=d(0.60,0.20,0.80,0.80)b[c.CloseButtonActive]=d(0.60,0.20,0.80,1.00)end
@@ -1048,12 +1072,17 @@ function main()
   sampAddChatMessage(u8:decode('[Autologin]: Скрипт {00FF00}успешно{FFFFFF} загружен. Версия: {9932cc}'..thisScript().version..'{FFFFFF}.'), -1)
 
   loadAllData()
-  
+
   sampRegisterChatCommand('autologin', function()
     main_window_state.v = not main_window_state.v
   end)
-  
-  temp_buffers.gauth = imgui.ImBuffer(100)
+
+  sampRegisterChatCommand('trinity_collebrate', function()
+    collebrating_state = 1
+    sampAddChatMessage(u8:decode('[Autologin]: Пожалуйста, нажмите на самую левую ячейку (неправильный выбор приведет к ошибкам при входе).'), -1)
+   end)
+
+  temp_buffers.gauth   = imgui.ImBuffer(100)
   temp_buffers.gauth.v = 'random'
 
   sampRegisterChatCommand('generator', function()
@@ -1135,12 +1164,15 @@ function saveAllData()
   local file = getWorkingDirectory()..'\\config\\autologin.json'
   local f = io.open(file, 'w+')
   if f then
-    f:write(encodeJson({servers = servers,
-    accounts                    = accounts,
-    last_uID                    = last_uID,
-    dontAskAboutDeletingAccount = temp_buffers.dontAskAboutDeletingAccount.v,
-    dontAskAboutDeletingServer  = temp_buffers.dontAskAboutDeletingServer.v,
-    dontAskAboutDeletingProject = temp_buffers.dontAskAboutDeletingProject.v})):close()
+    f:write(encodeJson({
+      servers                     = servers,
+      accounts                    = accounts,
+      last_uID                    = last_uID,
+      dontAskAboutDeletingAccount = temp_buffers.dontAskAboutDeletingAccount.v,
+      dontAskAboutDeletingServer  = temp_buffers.dontAskAboutDeletingServer.v,
+      dontAskAboutDeletingProject = temp_buffers.dontAskAboutDeletingProject.v,
+      trinity_data                = trinity_data
+  })):close()
   else
     sampAddChatMessage('[Autologin]: Упс, ошибка сохранения.', -1)
   end
@@ -1153,13 +1185,19 @@ function loadAllData()
   if not doesFileExist(file) then
     local f = io.open(file, 'w+')
     if f then
-      f:write(encodeJson({servers   = servers,
+      f:write(encodeJson({
+        servers   = servers,
         accounts                    = accounts,
         last_uID                    = last_uID,
         dontAskAboutDeletingAccount = false,
         dontAskAboutDeletingServer  = false,
-        dontAskAboutDeletingProject = false}))
+        dontAskAboutDeletingProject = false,
+        trinity_data                = trinity_data
+      }))
       f:close()
+      temp_buffers.dontAskAboutDeletingAccount = imgui.ImBool(false)
+      temp_buffers.dontAskAboutDeletingServer  = imgui.ImBool(false)
+      temp_buffers.dontAskAboutDeletingProject = imgui.ImBool(false)
     end
     return
   end
@@ -1173,6 +1211,7 @@ function loadAllData()
     temp_buffers.dontAskAboutDeletingAccount = imgui.ImBool(json['dontAskAboutDeletingAccount'])
     temp_buffers.dontAskAboutDeletingServer  = imgui.ImBool(json['dontAskAboutDeletingServer'])
     temp_buffers.dontAskAboutDeletingProject = imgui.ImBool(json['dontAskAboutDeletingProject'])
+    trinity_data                             = json['trinity_data'] or trinity_data
     f:close()
     local nick = sampGetPlayerNickname(select(2, sampGetPlayerIdByCharHandle(PLAYER_PED)))
     local ip1, port1 = sampGetCurrentServerAddress()
@@ -1182,7 +1221,6 @@ function loadAllData()
         account_info = v
       end
     end
-    -- account_info = accounts[]
   end
 end
 
