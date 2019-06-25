@@ -298,7 +298,7 @@ end
 
 function sampev.onSendClickTextDraw( id )
   if id == 0xFFFF then return end
-  print(id)
+  -- print(id)
   if collebrating_state == 1 then
     sampAddChatMessage(u8:decode('[Autologin]: Пожалуйста, нажмите на кнопку Submit (неправильный выбор приведет к ошибкам при входе).'), -1)
     trinity_data.baseClickable = id - 1
@@ -314,7 +314,7 @@ function sampev.onSendClickTextDraw( id )
 end
 
 function sampev.onShowTextDraw(id, textdraw)
-  print(id, textdraw.text)
+  -- print(id, textdraw.text)
   if account_info == nil then
     return
   end
