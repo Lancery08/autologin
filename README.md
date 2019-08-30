@@ -1,5 +1,6 @@
 # Autologin
-*Скрипт для удобного автологина в игру с поддержкой GAuth, специально для Trinity GTA.*
+
+_Скрипт для удобного автологина в игру с поддержкой GAuth, специально для Trinity GTA._
 
 ## Возможности
 
@@ -10,6 +11,7 @@
 Вся настройка выполняется через менеджер аккаунтов (/autologin).
 
 Там можно настроить:
+
 - Ник
 - Пароль
 - Дополнительный пароль
@@ -21,11 +23,13 @@
 ![alt-текст](https://b.radikal.ru/b22/1901/fe/936b989e2cef.png "Время")
 
 ## Установка
+
 Переместить файлы в папку moonloader игрового клиента.
 ![alt-текст](https://b.radikal.ru/b31/1901/6a/28500651b1db.png "Как оно должно выглядеть в папке")
 
 ### Зависимости
+
 - [Moonloader](http://blast.hk/moonloader)
 - [CLEO 4](https://cleo.li)
 - [Sampfuncs](https://blast.hk/sampfuncs)
-- Библиотеки: [ImGui](https://blast.hk/threads/19292/), [SAMP.Lua](https://blast.hk/threads/14624/), basexx, sha1 (в прикрепе)
+- Библиотеки: [ImGui](https://blast.hk/threads/19292/), [SAMP.Lua](https://blast.hk/threads/14624/)

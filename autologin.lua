@@ -330,6 +330,7 @@ function sampev.onShowTextDraw(id, textdraw)
 
   elseif account_info['suID'] >= 27 and account_info['suID'] <= 29 then
     -- Evolve
+
   elseif account_info['suID'] >= 30 and account_info['suID'] <= 33 then
     -- TODO: SAMP-RP
 
@@ -419,7 +420,7 @@ function sampev.onShowDialog(id, style, title, button1, button2, text)
     end
   end
 
-  -- Даймонд, который с багом.
+  -- TODO: Даймонд, который с багом.
   if account_info['suID'] >= 19 and account_info['suID'] <= 26 then
     -- if id == 2 and not attemps[1] then
     --   lua_thread.create(function()
@@ -433,7 +434,7 @@ function sampev.onShowDialog(id, style, title, button1, button2, text)
   end
 
   -- Евольва
-  if account_info['suID'] >= 27 and account_info['suID'] <= 29 then
+  if account_info['suID'] >= 19 and account_info['suID'] <= 21 then
     if id == 1 and not attemps[1] then
       sampSendDialogResponse(id, 1, 0, u8:decode(account_info['password']))
       attemps[1] = true
