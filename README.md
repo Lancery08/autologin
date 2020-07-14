@@ -1,5 +1,7 @@
 # Autologin
 
+[![time tracker](https://wakatime.com/badge/github/Akionka/autologin.svg)](https://wakatime.com/badge/github/Akionka/autologin)
+
 _Скрипт для удобного автологина в игру с поддержкой GAuth, специально для Trinity GTA._
 
 ## Возможности
